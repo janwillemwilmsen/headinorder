@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get your head in order.</title>
+  <meta  name="description" content="Get your head elements in order - speed and seo">
+  <style>
+
+
+
+	body{margin:0px ; padding:0px; background: #111317; font-family: Arial, Helvetica, sans-serif; }
+
+	.header {padding: 20px; display: flex;background: linear-gradient( to right,
+											#9e0142 1%,
+											#fdae61 4%,
+											#e6f598 20%,
+											#3288bd 30%,
+											#5e4fa2 50%,
+											#939393 75%,
+											#939393 100%);}
+	.title { text-align: left;padding:20px;	font-family: 'Fragment Mono', monospace;
+font-family: 'Inter', sans-serif;
+font-variant: small-caps;
+	}
+	
+		h1 {margin:0}
+			
+	  .weight-11 { color: #9e0142; }
+	  .weight-10 { color: #d53e4f; }
+	  .weight-9 { color: #f46d43; }
+	  .weight-8 { color: #fdae61; }
+	  .weight-7 { color: #fee08b; }
+	  .weight-6 { color: #e6f598; }
+	  .weight-5 { color: #abdda4; }
+	  .weight-4 { color: #66c2a5; }
+	  .weight-3 { color: #3288bd; }
+	  .weight-2 { color: #5e4fa2; }
+	  .weight-1 { color: #939393; }
+	  .weight-0 { color: #cccccc; }
+
+	  .outerresults {display:flex;flex-direction:row; align-items: baseline;}
+	  
+	  .mainform {padding:20px 0; margin: auto 0; display: flex; flex-direction: row; }
+	  #results-container {padding:20px; margin: auto 0; display: flex; flex-direction: column;}
+	  .intotxt {background-color: #292c31; padding: 20px; color: white; margin:20px;}
+	  details {background-color:#292c31; color:white; font-family: Arial, Helvetica, sans-serif; padding:20px;}
+	  summary {margin-bottom: 10px;}
+	  .barItems {margin-top:10px; display: block;}
+	  .summaryText {font-size: 12px;}
+	  #error {color:#f46d43;size: 14px; text-align: center; font-weight: bold; padding:40px; }
+
+	 .explain {display: flex; flex-direction: column; background-color: #292c31; padding:20px;}
+	 .explaintitle {padding: 10px 0;color: white; font-size: 12px;}
+
+/* creates a filled background before loading the results :: */
+/* 	 canvas, .c2 {width: 100%; height: 100%; margin: 0; background: linear-gradient(to bottom, #20202c 30%,#515175 100%); } */
+
+
+
+	 code {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+code::after {
+  content: "...";
+}
+
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<script src="fetch.js"></script>
+
+<title>Web Page Analyzer</title>
+</head>
+<body id="main">
+
+	<div class="header">
+
+		<img src="assets/logo.webp" alt width="50" height="50">
+		
+		<h1 class="title">Get your head in order </h1>
+	</div>
+
+
+	<div class="intotxt">
+		See how elements in the head of a page are ordered. And see the optimal placement.<br>
+		Optimizing the elements make pages load faster.<br><br>
+
+
+		<small>Type in a url. Hit Analyze and wait for results...</small>
+
+		
+		<div class="mainform">
+			<form onsubmit="event.preventDefault(); logWeights()">
+				<input type="url" name="url" id="url" placeholder="https://example.com" pattern="https://.*" size="30"	 required>
+				<button type="submit">Analyze</button>
+			</form>
+		</div>
+	</div>
+ 	<div style="display: flex; justify-content: center;">
+		<video id="loading-video" src="/assets/waiting.mp4" autoplay loop muted style="display: none;"></video>
+	</div>
+ 
+ 
+  
+ 
+
+
+
+  <div id="results-container"></div>
+  <div  id="error" class="">
+  </div>
+   
+
+<details class="">
+	<summary>
+		Slides from "Get Your Head Straight" by Harry Roberts.
+	</summary>
+
+
+	<div style="width: 50%;">
+		<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/3a0d26bdfec642e496cb6d04103360b0" 
+		title="Get Your Head Straight" 
+		allowfullscreen="true" 
+		style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 314;" 
+		data-ratio="1.78343949044586"></iframe>
+	</div>
+
+
+
+
+</details>
+
+
+<footer>
+
+	<!-- nothing here -->
+
+</footer>
+
+
+
+</body>
+</html>
