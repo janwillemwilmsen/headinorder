@@ -1,0 +1,42 @@
+{
+	"configurations": [
+		{
+			"name": "Cloud Run: Run/Debug Locally",
+			"type": "cloudcode.cloudrun",
+			"request": "launch",
+			"build": {
+				"docker": {
+					"path": "Dockerfile"
+				}
+			},
+			"image": "getheadinorder2",
+			"service": {
+				"name": "getheadinorder2",
+				"containerPort": 8080,
+								"env": [
+					{
+						"name": "K_SERVICE",
+						"value": "kservicegetheadone"
+					},
+					{
+						"name": "K_REVISION",
+						"value": "kservicegetheadone"
+					},
+					{
+						"name": "K_CONFIGURATION",
+						"value": "kservicegetheadone"
+					}
+				],
+				"resources": {
+					"limits": {
+						"memory": "4096Mi"
+					}
+				}
+			},
+			"target": {
+				"minikube": {}
+			},
+			"watch": true
+		}
+	]
+}

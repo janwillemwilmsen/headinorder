@@ -1,0 +1,10 @@
+Moet eigenlijk nieuw Project in Gcloud aanmaken.
+Dockerfile is nodig.
+Dockerfile kan je ook gebruiken. 
+
+
+
+
+gcloud run deploy
+
+REGION 15

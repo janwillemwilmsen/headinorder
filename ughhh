@@ -1,0 +1,20 @@
+FROM mcr.microsoft.com/playwright:bionic
+
+# copy project (including tests)
+ 
+WORKDIR /usr/src/app
+
+   
+# Run playwright test
+ 
+
+COPY package*.json ./
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD = 1 
+RUN npm install
+RUN npx playwright install
+COPY . .
+
+
+EXPOSE 8080
+CMD [ "node", "app.js" ]
+
