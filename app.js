@@ -5,9 +5,10 @@ import url from 'url'
 
 
 /// BLA
+/// got(targetUrl, {rejectUnauthorized: false}) /// https://github.com/sindresorhus/got/issues/675
 
 const app = express();
-const port = 3000;
+const port = 4000;
 app.use(express.static('public'));
 
 
@@ -23,11 +24,43 @@ app.get('/', (req, res) => {
 	const { url } = req.query;
 
 
+	// async function getProcessedHeadElements(page) {
+	// 	const headElements = await page.$$('head > *');
+	// 	const newElements = [];
+	
+	// 	for (const element of headElements) {
+	// 		const tagName = await element.evaluate(el => el.tagName);
+	// 		if (tagName.toLowerCase() === 'link') {
+	// 			const rel = await element.getAttribute('rel');
+	// 			const href = await element.getAttribute('href');
+	// 			if (rel && rel.toLowerCase().includes('stylesheet') && href) {
+	// 				let hrefUrl = new URL(href, page.url());  // handle both absolute and relative URLs
+	
+	// 				// Fetch the CSS content
+	// 				const response = await got(hrefUrl.toString());
+	// 				const cssContent = response.body;
+	
+	// 				// Add the CSS content to newElements in style tags
+	// 				newElements.push({type: 'style', content: cssContent});
+	// 			} else {
+	// 				// simply add to newElements for non-stylesheet links
+	// 				newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
+	// 			}
+	// 		} else {
+	// 			newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
+	// 		}
+	
+	// 		// Remove the current element from the head
+	// 		await element.evaluate(el => el.remove());
+	// 	}
+	
+	// 	return newElements;
+	// }
+
+
 	async function getProcessedHeadElements(page) {
 		const headElements = await page.$$('head > *');
-		const newElements = [];
-	
-		for (const element of headElements) {
+		const newElements = await Promise.all(headElements.map(async (element) => {
 			const tagName = await element.evaluate(el => el.tagName);
 			if (tagName.toLowerCase() === 'link') {
 				const rel = await element.getAttribute('rel');
@@ -39,33 +72,37 @@ app.get('/', (req, res) => {
 					const response = await got(hrefUrl.toString());
 					const cssContent = response.body;
 	
-					// Add the CSS content to newElements in style tags
-					newElements.push({type: 'style', content: cssContent});
+					// Return the CSS content in style tags
+					return { type: 'style', content: cssContent };
 				} else {
-					// simply add to newElements for non-stylesheet links
-					newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
+					// Return non-stylesheet links
+					return { type: 'other', content: await page.evaluate(el => el.outerHTML, element) };
 				}
 			} else {
-				newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
+				// Return other elements
+				return { type: 'other', content: await page.evaluate(el => el.outerHTML, element) };
 			}
+		}));
 	
-			// Remove the current element from the head
-			await element.evaluate(el => el.remove());
-		}
+		// Remove all elements from the head
+		await Promise.all(headElements.map(element => element.evaluate(el => el.remove())));
 	
 		return newElements;
 	}
+	
+
 
 
   
 	try {
-	  const browser = await chromium.launch({headless: true});
+	  const browser = await chromium.launch({headless: false});
 	  const context = await browser.newContext();
 	  const page = await context.newPage();
   
 	  await page.goto(url);
+	  await page.waitForLoadState('domcontentloaded'); // Wait for DOMContentLoaded event
 
-
+		await page.waitForTimeout(1000)
 
 	  
 	  

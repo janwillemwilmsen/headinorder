@@ -103,9 +103,10 @@ const encodedElement = element;
 const codedHeadElement = htmlEncode(html)
  
 actualOrderDetails.innerHTML += `<div class="outerresults">
-									<div style="min-width:250px;">${viz} ${weight + 1}</div> 
+									<div style="min-width:200px;">${viz} ${weight + 1}</div> 
+									<div style="min-width:100px;"> 	${encodedElement}: </div>
 							  		<code style="display:inline-block;overflow-wrap: anywhere;" class="Xlanguage-html">
-										${encodedElement}: 
+									
 										${codedHeadElement}
 									</code>
 								 </div>`;
@@ -135,9 +136,10 @@ const viz = visualizeWeight(weight);
  const encodedElement = element;
 const codedHeadElement = htmlEncode(html)
 sortedOrderDetails.innerHTML += `<div class="outerresults">
-										<div style="min-width:250px;">${viz} ${weight + 1}</div> 
+										<div style="min-width:200px;">${viz} ${weight + 1}</div> 
+										<div style="min-width:100px;">${encodedElement}:</div>
 							  			<code style="display:inline-block;overflow-wrap:anywhere;" class="Xlanguage-html">
-											${encodedElement}:
+											
 											${codedHeadElement}
 										</code>
 								 </div>`;
@@ -148,7 +150,7 @@ sortedOrderDetails.innerHTML += `<div class="outerresults">
 
 
 const explain = document.createElement('div')
-explain.innerHTML = ` 	<div class="explain">
+explain.innerHTML = ` <br><br>	<div class="explain">
 <div class="explaintitle">Weights + Head elements:</div>
 <div class="weight-10" style="color:#9e0142">Weight 11 - meta:is([charset], [http-equiv], [name=viewport])</div>
 <div class="weight-9" style="color:#d53e4f">Weight 10 - title</div>
@@ -161,7 +163,18 @@ explain.innerHTML = ` 	<div class="explain">
 <div class="weight-2" style="color:#3288bd">Weight 3 - script[src][defer]</div>
 <div class="weight-1" style="color:#5e4fa2">Weight 2 - link:is([rel=prefetch], [rel=dns-prefetch], [rel=prerender])</div>
 <div class="weight-0" style="color:#cccccc">Weight 1 - other</div>
-</div>`
+</div>
+
+<br><br>
+<div class="explain">
+<div class="explaintitle">Notes:</div>
+<div class="explainnote">- External stylesheets are downloaded and inlined in the results. This is to test if there are '@import' includes in the file.</div>
+<div class="explainnote">- If there are external 'link rel = stylesheets' loaded they probably are injected by scripts. Check manually if there are @import in them.</div>
+<div class="explainnote">- Script from tagmanagers and social media platforms can inject other head-elements ('origin trails', or 'button.js').</div>
+ </div>
+
+
+`
 
 
 
@@ -202,13 +215,16 @@ resultsContainer.appendChild(explain);
         const errorDiv = document.getElementById('error');
         errorDiv.innerHTML = `
 		
-		<div class="wrapper">
+		<div class="wrapper" style="padding: 40px">
 		Hmnnnn, something went wrong. Please check the url you are testing, is it valid? Some websites may have rules in place which block automated test tools like this one.
+		Invalid certificates can also cause an error. 
 		</div>
 		`;
 
 		const form = document.querySelector('form');
 		const urlInput = document.getElementById('url');
+
+		errorDiv.classList.add('visible');
 
 		form.classList.remove('disabled');
 		urlInput.disabled = false;

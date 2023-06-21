@@ -3,15 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Get your head in order.</title>
-  <meta  name="description" content="Get your head elements in order - speed and seo">
+   <meta  name="description" content="Get your head elements in order - speed and seo">
   <style>
 
 
 
-	body{margin:0px ; padding:0px; background: #111317; font-family: Arial, Helvetica, sans-serif; }
+	body{margin:0px ; padding:0px; background: #111317; font-family: Arial, Helvetica, sans-serif; display: flex;
+            flex-direction: column;
+            min-height: 100vh; }
+			#main {
+            flex: 1;
+        }
 
-	.header {padding: 20px; display: flex;background: linear-gradient( to right,
+	.header {padding: 5px; display: flex;background: linear-gradient( to right,
 											#9e0142 1%,
 											#fdae61 4%,
 											#e6f598 20%,
@@ -19,12 +23,13 @@
 											#5e4fa2 50%,
 											#939393 75%,
 											#939393 100%);}
-	.title { text-align: left;padding:20px;	font-family: 'Fragment Mono', monospace;
+	.title { text-align: left;padding:0px;	font-family: 'Fragment Mono', monospace;
 font-family: 'Inter', sans-serif;
-font-variant: small-caps;
+font-variant: caps;
 	}
 	
-		h1 {margin:0}
+		h1 {margin:0;color: #f46d43;}
+		.subtitle {margin:0;color: #f46d43;}
 			
 	  .weight-11 { color: #9e0142; }
 	  .weight-10 { color: #d53e4f; }
@@ -48,25 +53,38 @@ font-variant: small-caps;
 	  summary {margin-bottom: 10px;}
 	  .barItems {margin-top:10px; display: block;}
 	  .summaryText {font-size: 12px;}
-	  #error {color:#f46d43;size: 14px; text-align: center; font-weight: bold; padding:40px; }
-
+	  #error {color:#f46d43;size: 14px; text-align: center; font-weight: bold;   opacity: 0;  transition: opacity 1s ease-in-out; }
+	  #error.visible {opacity: 1;}
 	 .explain {display: flex; flex-direction: column; background-color: #292c31; padding:20px;}
 	 .explaintitle {padding: 10px 0;color: white; font-size: 12px;}
+	 .explainnote {color: white;}
 
+	 details.faqs {margin:5px; padding: 0;  width: 90vw;  border-radius: 5px; ;}
+
+  .faqitem {height: 50px; padding:20px; margin-bottom: 0px; font-weight: 600; cursor: pointer;  }
+  .faqitem:hover {height: 50px; padding:20px; margin-bottom: 0px; background-color: #1e1f22;}
+
+  .faqcontent {padding: 20px; border-top: 1px solid #111317;}
+  .faqcontainer {display:flex; flex-direction: column; gap: 4; align-items: center;}
 /* creates a filled background before loading the results :: */
 /* 	 canvas, .c2 {width: 100%; height: 100%; margin: 0; background: linear-gradient(to bottom, #20202c 30%,#515175 100%); } */
 
 
 
-	 code {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
+	 code {   overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}
+	 code::after {  content: "...";}
 
-code::after {
-  content: "...";
-}
+	 .twoColumnResponsive {
+			   gap:20px;
+	   display: flex;
+	   flex-direction: row;
+   }
+			@media (max-width: 768px) {
+	   .twoColumnResponsive {
+		   flex-direction: column;
+	   }
+   }
+   
 
 </style>
 
@@ -74,21 +92,33 @@ code::after {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.5/dat.gui.min.js"></script>
+<script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script src="fetch.js"></script>
 
-<title>Web Page Analyzer</title>
+<title>Boost website performance, order your head elements. Improve SEO while at it.</title>
 </head>
-<body id="main">
+<body>
 
 	<div class="header">
-
-		<img src="assets/logo.webp" alt width="50" height="50">
 		
-		<h1 class="title">Get your head in order </h1>
 	</div>
 
+
+	<div style="display: flex; flex-direction: row;padding: 20px; gap:20px">
+
+	
+	<div>
+		<img src="assets/logo3.webp" alt width="50" height="50">
+	</div>
+		<div style="display: flex; flex-direction: column; gap: 0px;">
+			<h1 class="title">PERFHEAD</h1>
+			<div class="subtitle" style="size: 10px;     text-align: center;">Set your head in order </div>
+		</div>
+		
+	</div>
+
+
+	<div  id="main">
 
 	<div class="intotxt">
 		See how elements in the head of a page are ordered. And see the optimal placement.<br>
@@ -116,33 +146,236 @@ code::after {
 
 
   <div id="results-container"></div>
-  <div  id="error" class="">
-  </div>
+  <div  id="error" class=""></div>
    
 
-<details class="">
-	<summary>
-		Slides from "Get Your Head Straight" by Harry Roberts.
+<div class="faqcontainer">
+
+<details class="faqs">
+	<summary class="faqitem">
+		Credits
 	</summary>
+	<div class="faqcontent">
 
-
-	<div style="width: 50%;">
-		<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/3a0d26bdfec642e496cb6d04103360b0" 
-		title="Get Your Head Straight" 
-		allowfullscreen="true" 
-		style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 314;" 
-		data-ratio="1.78343949044586"></iframe>
+		<h3>"Get Your Head Straight" by Harry Roberts.</h3>
+		 
+		<div class="twoColumnResponsive">
+		
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/UW1PEMBdX5E" 
+			title="YouTube video player" frameborder="0" 
+			style=" width: 100%; height: auto; aspect-ratio: 560 / 314;"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
+			</iframe>
+		
+			<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/3a0d26bdfec642e496cb6d04103360b0" 
+			title="Get Your Head Straight" 
+			allowfullscreen="true" 
+			style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 314;" 
+			data-ratio="1.78343949044586">
+			</iframe>
+		 
 	</div>
 
+	<h3> Capo.JS by </h3>
 
-
-
+		
+		
+	</div>
 </details>
 
+	<details class="faqs">
+		<summary class="faqitem">What is the ideal order of elements in the head?</summary>
+		<div class="faqcontent">
+		Theoretically that is. Because script and styling can depend on each other. Always test if moving elements has impact on performance and functionality.   
+		First check if the elements in your head are valid html. Remove any obsolete elements, place them in the body if needed.
+	 
+	 <br><br>
+<!-- <head> -->
+	<!-- &lt;head&gt; -->
+	<div style="margin-left:40px">
+	<span style="color:#DCDCDC">&lt;head&gt;</span>
 
-<footer>
+<ol>
+ <li style="margin-bottom: 10px;">
+			Meta data about the page:<br>
+
+			<!-- <meta charset="UTF-8">
+			<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<meta http-equiv="content-security-policy" content="default-src 'self'"> -->
+
+			<!-- &lt;meta charset=&quot;UTF-8&quot;&gt;<br>
+			&lt;meta http-equiv=&quot;content-type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;<br>
+			&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1.0&quot;&gt;<br>
+			&lt;meta http-equiv=&quot;content-security-policy&quot; content=&quot;default-src &apos;self&apos;&quot;&gt; <br> -->
+
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">charset</span>=<span style="color:#D4D4D4">&quot;UTF-8&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">http-equiv</span>=<span style="color:#D4D4D4">&quot;content-type&quot;</span> <span style="color:#CE9178">content</span>=<span style="color:#D4D4D4">&quot;text/html; charset=UTF-8&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">name</span>=<span style="color:#D4D4D4">&quot;viewport&quot;</span> <span style="color:#CE9178">content</span>=<span style="color:#D4D4D4">&quot;width=device-width, initial-scale=1.0&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">http-equiv</span>=<span style="color:#D4D4D4">&quot;content-security-policy&quot;</span> <span style="color:#CE9178">content</span>=<span style="color:#D4D4D4">&quot;default-src &apos;self&apos;&quot;</span><span style="color:#B5CBD9">&gt;</span> <br>
+			
+			<br> 
+			The base element should also be at the top of the head.<br>
+			<!-- <base> -->
+			<!-- &lt;base&gt; -->
+			<span style="color:#B5CBD9">&lt;base&gt;</span>
+
+
+ </li><li style="margin-bottom: 10px;">
+			The title:<br>
+			<!-- <title>...</title> -->
+			<!-- &lt;title&gt;&lt;/title&gt;<br> -->
+			<span style="color:#B5CBD9">&lt;title&gt;</span>...<span style="color:#B5CBD9">&lt;/title&gt;</span><br>
+
+
+ </li><li style="margin-bottom: 10px;">
+			preconnect (async by default):<br>
+			<!-- <link rel="preconnect" href="https://example.com" /> -->
+			<!-- &lt;link rel=&quot;preconnect&quot; href=&quot;https://example.com&quot; /&gt;<br> -->
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;preconnect&quot;</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;https://example.com&quot;</span> <span style="color:#B5CBD9">/&gt;</span><br>
+
+
+ </li><li style="margin-bottom: 10px;">
+			Async scripts:<br>
+			<!-- <script src="" async></script> (async by default) -->
+			<!-- &lt;script src=&quot;&quot; async&gt;&lt;/script&gt;<br> -->
+			<span style="color:#B5CBD9">&lt;script</span> <span style="color:#CE9178">src</span>=<span style="color:#D4D4D4">&quot;&quot;</span> <span style="color:#CE9178">async</span><span style="color:#B5CBD9">&gt;</span><span style="color:#DCDCDC">&lt;/script&gt;</span><br>
+
+ </li><li style="margin-bottom: 10px;">
+			if - CSS with @import<br>
+			<!-- "@import url (https:// ...)" -->
+			<span style="color:#569CD6">@import</span> <span style="color:#9CDCFE">url</span> <span style="color:#CE9178">(</span><span style="color:#D4D4D4">https:// ...</span><span style="color:#CE9178">)</span><span style="color:#569CD6">;</span>
+
+</li><li style="margin-bottom: 10px;">			
+			Synchronous JS (inline or external) <br>
+			(CSS blocks JS otherwise)<br>
+			<!-- <script src="script.js"></script> -->
+			<!-- &lt;script src=&quot;script.js&quot;&gt;&lt;/script&gt; -->
+			<span style="color:#B5CBD9">&lt;script</span> <span style="color:#CE9178">src</span>=<span style="color:#D4D4D4">&quot;script.js&quot;</span><span style="color:#B5CBD9">&gt;</span><span style="color:#DCDCDC">&lt;/script&gt;</span>
+
+
+</li><li style="margin-bottom: 10px;">
+			Synchronous CSS (inline or external)<br>
+			<!-- <link href="style.css" rel="stylesheet">  <style>...</style> -->
+			<!-- &lt;link href=&quot;style.css&quot; rel=&quot;stylesheet&quot;&gt;  &lt;style&gt;...&lt;/style&gt; -->
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;style.css&quot;</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;stylesheet&quot;</span><span style="color:#B5CBD9">&gt;</span>  <span style="color:#B5CBD9">&lt;style&gt;</span>...<span style="color:#B5CBD9">&lt;/style&gt;</span>
+
+
+</li><li style="margin-bottom: 10px;">
+			Preload<br> 
+			(async by default)<br>
+			<!-- <link rel="preload" href="" as="..." type="...." crossorigin=""> -->
+			<!-- &lt;link rel=&quot;preload&quot; href=&quot;&quot; as=&quot;...&quot; type=&quot;....&quot; crossorigin=&quot;&quot;&gt; -->
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;preload&quot;</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;&quot;</span> <span style="color:#CE9178">as</span>=<span style="color:#D4D4D4">&quot;...&quot;</span> <span style="color:#CE9178">type</span>=<span style="color:#D4D4D4">&quot;....&quot;</span> <span style="color:#CE9178">crossorigin</span>=<span style="color:#D4D4D4">&quot;&quot;</span><span style="color:#B5CBD9">&gt;</span>
+
+
+			
+
+</li><li style="margin-bottom: 10px;">			
+			Deferred javascript:<br>
+			(async by default)<br>
+			<!-- <script src="" defer></script> -->
+			<!-- &lt;script src=&quot;&quot; defer&gt;&lt;/script&gt; -->
+			<span style="color:#B5CBD9">&lt;script</span> <span style="color:#CE9178">src</span>=<span style="color:#D4D4D4">&quot;&quot;</span> <span style="color:#CE9178">defer</span><span style="color:#B5CBD9">&gt;</span><span style="color:#DCDCDC">&lt;/script&gt;</span>
+<br>
+
+			
+</li><li style="margin-bottom: 10px;">
+			Prefetch / prerender <br>
+			(async by default)<br>
+			<!-- <link rel="prefetch" href="/articles/" as="document"> -->
+			<!-- &lt;link rel=&quot;prefetch&quot; href=&quot;/articles/&quot; as=&quot;document&quot;&gt; -->
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;prefetch&quot;</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;/articles/&quot;</span> <span style="color:#CE9178">as</span>=<span style="color:#D4D4D4">&quot;document&quot;</span><span style="color:#B5CBD9">&gt;</span>
+			<br>
+			
+
+</li><li style="margin-bottom: 10px;">
+			SEO metatags / open graph tags / progressive webapp tags, like:   <br>
+			
+			<!-- <meta name="description" content="....">
+			<link rel="manifest" href="/manifest.webmanifest">
+			<link rel="shortcut icon" type="image/x-icon" href="/icons/favicon.ico"> -->
+
+			<!-- &lt;meta property=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;<br>
+			&lt;meta name=&quot;description&quot; content=&quot;....&quot;&gt;<br>
+			&lt;link rel=&quot;manifest&quot; href=&quot;/manifest.webmanifest&quot;&gt;<br>
+			&lt;link rel=&quot;shortcut icon&quot; type=&quot;image/x-icon&quot; href=&quot;/icons/favicon.ico&quot;&gt;<br> -->
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">property</span>=<span style="color:#D4D4D4">&quot;twitter:card&quot;</span> <span style="color:#CE9178">content</span>=<span style="color:#D4D4D4">&quot;summary_large_image&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;meta</span> <span style="color:#CE9178">name</span>=<span style="color:#D4D4D4">&quot;description&quot;</span> <span style="color:#CE9178">content</span>=<span style="color:#D4D4D4">&quot;....&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;manifest&quot;</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;/manifest.webmanifest&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+			<span style="color:#B5CBD9">&lt;link</span> <span style="color:#CE9178">rel</span>=<span style="color:#D4D4D4">&quot;shortcut icon&quot;</span> <span style="color:#CE9178">type</span>=<span style="color:#D4D4D4">&quot;image/x-icon&quot;</span> <span style="color:#CE9178">href</span>=<span style="color:#D4D4D4">&quot;/icons/favicon.ico&quot;</span><span style="color:#B5CBD9">&gt;</span><br>
+
+
+
+</li></ol>
+
+
+		<!-- </head> -->
+		<!-- &lt;/head&gt; -->
+		<span style="color:#DCDCDC">&lt;/head&gt;</span>
+	</div>
+ 
+
+</div>
+</details>
+
+<details class="faqs">
+	<summary class="faqitem">Testcase 1</summary>
+	<div class="faqcontent">
+		To see if changing the order of header elements has impact on performance I changed some on my website.
+		Programmablebrowser.com is build on the Astro framework which is fast by default. Only downside is that Astro injects CSS at the bottom of the head. 
+		Nevertheless:<br>
+
+	 
+   <div class="twoColumnResponsive">
+
+		<img src="">
+		<img src="">
+
+   </div>
+
+
+
+	</div>
+	</details>
+
+</div>  <!--- end faq container-->
+
+
+</div> <!--- end div id main-->
+
+<footer style="   background-color: #f1f1f1;
+padding: 10px;
+text-align: center;">
 
 	<!-- nothing here -->
+
+	 
+<div style=" 
+text-align: center;">
+	<a onclick="openModal()">about</a>
+</div>
+
+    <dialog id="myModal">
+        <h3>About</h3>
+        <p>This is a simple modal example.</p>
+        <button onclick="closeModal()">Close</button>
+    </dialog>
+
+    <script>
+        const modal = document.getElementById("myModal");
+
+        // Open the modal
+        function openModal() {
+            modal.showModal();
+        }
+
+        // Close the modal
+        function closeModal() {
+            modal.close();
+        }
+    </script>
+	
 
 </footer>
 
