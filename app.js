@@ -95,7 +95,8 @@ app.get('/', (req, res) => {
 
   
 	try {
-	  const browser = await chromium.launch({headless: false});
+	  const browser = await chromium.launch({headless: true});
+	//   const browser = await chromium.launch({headless: false});
 	  const context = await browser.newContext();
 	  const page = await context.newPage();
   
@@ -267,7 +268,7 @@ for (const newElement of newElements) {
 		});
 });
   
-	//   await browser.close();
+	  await browser.close();
   
 	  res.json(headWeights);
 	} catch (error) {
