@@ -3,99 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta  name="description" content="Get your head elements in order - speed and seo">
-  <style>
+  <title>Boost website performance, order your head elements. Improve SEO while at it.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+	<script src="fetch.js"></script>
+	<style>
+		body {
+		margin: 0;
+		padding: 0;
+		background: #111317;
+		font-family: Arial,Helvetica,sans-serif;
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh
+		}
+		#main {flex: 1	}
+		.header {		padding: 5px;		display: flex;
+		background: linear-gradient(to right,#9e0142 1%,#fdae61 4%,#e6f598 20%,#3288bd 30%,#5e4fa2 50%,#939393 75%,#939393 100%)
+		}
+		.title {text-align: left;  padding: 0;  font-family: 'Fragment Mono',monospace;  font-family: Inter,sans-serif;  font-variant: caps}
+		h1 {  margin: 0;  color: #f46d43}
+		.subtitle {  margin: 0;  color: #f46d43}
+		.weight-11 {  color: #9e0142}
+		.weight-10 {  color: #d53e4f}
+		.weight-9 {  color: #f46d43}
+		.weight-8 {  color: #fdae61}
+		.weight-7 {  color: #fee08b}
+		.weight-6 {  color: #e6f598}
+		.weight-5 {  color: #abdda4}
+		.weight-4 {  color: #66c2a5}
+		.weight-3 {  color: #3288bd}
+		.weight-2 {  color: #5e4fa2}
+		.weight-1 {  color: #939393}
+		.weight-0 {  color: #cccccc}
+		.outerresults {  display: flex;  flex-direction: row;  align-items: baseline}
+		.mainform {  padding: 20px 0;  margin: auto 0;  display: flex;  flex-direction: row}
+		#results-container {  padding: 20px;  margin: auto 0;  display: flex;  flex-direction: column}
+		.intotxt {  background-color: #292c31;  padding: 20px;  color: white;  margin: 20px}
+		details {  background-color: #292c31;  color: white;  font-family: Arial,Helvetica,sans-serif;  padding: 20px}
+		summary {  margin-bottom: 10px}
+		.barItems {  margin-top: 10px;  display: block}
+		.summaryText {  font-size: 12px}
+		#error {  color: #f46d43;  size: 14px;  text-align: center;  font-weight: 700;  opacity: 0;  transition: opacity 1s ease-in-out}
+		#error.visible {  opacity: 1}
+		.explain {  background-color: #292c31;  padding: 20px}
+		.explaintitle {  padding: 10px 0;  color: white;  font-size: 12px;  list-style: none}
+		.explainnote {  color: white;  padding-bottom: 10px}
+		a {  color: white}
+		details.faqs {  margin: 5px;  padding: 0;  width: 90vw;  border-radius: 5px}
+		.faqitem {  height: 50px;  padding: 20px;  margin-bottom: 0;  font-weight: 600;  cursor: pointer;  border-radius: 5px}
+		.faqitem:hover {  height: 50px;  padding: 20px;  margin-bottom: 0;  background-color: #1e1f22}
+		.faqcontent {  padding: 20px;  border-top: 1px solid #111317}
+		.faqcontainer {  display: flex;  flex-direction: column;  gap: 4;  align-items: center}
+		code {  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis}
+		code::after {  content: "..."}
+		.twoColumnResponsive {  gap: 20px;  display: flex;  flex-direction: row;  flex-wrap: wrap}
+		@media (max-width:768px) {  .twoColumnResponsive {    flex-direction: column  }}
+		button,
+		input[type=url],
+		select,
+		textarea {
+		font: 1.25rem/1.5 sans-serif;
+		border-radius: 5px;
+		display: block;
+		box-sizing: border-box;
+		width: 100%;
+		padding: .5rem .75rem
+		}
+
+	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<meta name="description" content="Get your head elements in order - speed and seo">
+	<link rel="icon" href="/favicon.ico" sizes="48x48" >
+	<link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml">
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png"/>
+	<link rel="manifest" href="/site.webmanifest" />
+
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:site" content="@jw_wilmsen" />
+	<meta name="twitter:title" content="Get your head elements in order" />
+	<meta name="twitter:description" content="Optimize your head elements for speed and SEO" />
+	<meta name="twitter:image" content="https://perfhead.com/opengraph-image-perfhead.png" />
+	<meta name="twitter:url" content="https://perfhead.com">
+
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="Get your head elements in order" />
+	<meta property="og:description" content="Optimize your head elements for speed and SEO" />
+	<meta property="og:url" content="https://perfhead.com" />
+	<meta property="og:image" content="https://perfhead.com/opengraph-image-perfhead.png" />
 
 
-
-	body{margin:0px ; padding:0px; background: #111317; font-family: Arial, Helvetica, sans-serif; display: flex;
-            flex-direction: column;
-            min-height: 100vh; }
-			#main {
-            flex: 1;
-        }
-
-	.header {padding: 5px; display: flex;background: linear-gradient( to right,
-											#9e0142 1%,
-											#fdae61 4%,
-											#e6f598 20%,
-											#3288bd 30%,
-											#5e4fa2 50%,
-											#939393 75%,
-											#939393 100%);}
-	.title { text-align: left;padding:0px;	font-family: 'Fragment Mono', monospace;
-font-family: 'Inter', sans-serif;
-font-variant: caps;
-	}
-	
-		h1 {margin:0;color: #f46d43;}
-		.subtitle {margin:0;color: #f46d43;}
-			
-	  .weight-11 { color: #9e0142; }
-	  .weight-10 { color: #d53e4f; }
-	  .weight-9 { color: #f46d43; }
-	  .weight-8 { color: #fdae61; }
-	  .weight-7 { color: #fee08b; }
-	  .weight-6 { color: #e6f598; }
-	  .weight-5 { color: #abdda4; }
-	  .weight-4 { color: #66c2a5; }
-	  .weight-3 { color: #3288bd; }
-	  .weight-2 { color: #5e4fa2; }
-	  .weight-1 { color: #939393; }
-	  .weight-0 { color: #cccccc; }
-
-	  .outerresults {display:flex;flex-direction:row; align-items: baseline;}
-	  
-	  .mainform {padding:20px 0; margin: auto 0; display: flex; flex-direction: row; }
-	  #results-container {padding:20px; margin: auto 0; display: flex; flex-direction: column;}
-	  .intotxt {background-color: #292c31; padding: 20px; color: white; margin:20px;}
-	  details {background-color:#292c31; color:white; font-family: Arial, Helvetica, sans-serif; padding:20px;}
-	  summary {margin-bottom: 10px;}
-	  .barItems {margin-top:10px; display: block;}
-	  .summaryText {font-size: 12px;}
-	  #error {color:#f46d43;size: 14px; text-align: center; font-weight: bold;   opacity: 0;  transition: opacity 1s ease-in-out; }
-	  #error.visible {opacity: 1;}
-	 .explain {display: flex; flex-direction: column; background-color: #292c31; padding:20px;}
-	 .explaintitle {padding: 10px 0;color: white; font-size: 12px;}
-	 .explainnote {color: white;}
-
-	 details.faqs {margin:5px; padding: 0;  width: 90vw;  border-radius: 5px; ;}
-
-  .faqitem {height: 50px; padding:20px; margin-bottom: 0px; font-weight: 600; cursor: pointer;  }
-  .faqitem:hover {height: 50px; padding:20px; margin-bottom: 0px; background-color: #1e1f22;}
-
-  .faqcontent {padding: 20px; border-top: 1px solid #111317;}
-  .faqcontainer {display:flex; flex-direction: column; gap: 4; align-items: center;}
-/* creates a filled background before loading the results :: */
-/* 	 canvas, .c2 {width: 100%; height: 100%; margin: 0; background: linear-gradient(to bottom, #20202c 30%,#515175 100%); } */
-
-
-
-	 code {   overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}
-	 code::after {  content: "...";}
-
-	 .twoColumnResponsive {
-			   gap:20px;
-	   display: flex;
-	   flex-direction: row;
-   }
-			@media (max-width: 768px) {
-	   .twoColumnResponsive {
-		   flex-direction: column;
-	   }
-   }
-   
-
-</style>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-
-<script async src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-<script src="fetch.js"></script>
-
-<title>Boost website performance, order your head elements. Improve SEO while at it.</title>
 </head>
 <body>
 
@@ -108,11 +106,11 @@ font-variant: caps;
 
 	
 	<div>
-		<img src="assets/logo3.webp" alt width="50" height="50">
+		<img src="assets/logo.webp" alt width="50" height="50">
 	</div>
 		<div style="display: flex; flex-direction: column; gap: 0px;">
 			<h1 class="title">PERFHEAD</h1>
-			<div class="subtitle" style="size: 10px;     text-align: center;">Set your head in order </div>
+			<div class="subtitle" style="size: 10px; text-align: center;">Set your head in order </div>
 		</div>
 		
 	</div>
@@ -121,19 +119,35 @@ font-variant: caps;
 	<div  id="main">
 
 	<div class="intotxt">
-		See how elements in the head of a page are ordered. And see the optimal placement.<br>
-		Optimizing the elements make pages load faster.<br><br>
+		<strong>See how elements in the head of a page are ordered, and see the optimal order.</strong><br>
+		Optimizing the order of the elements make pages load faster, which is good for SEO and user experience.<br><br>
 
 
-		<small>Type in a url. Hit Analyze and wait for results...</small>
+		<small>Type in a url. Hit 'Analyze' and wait for the results*.</small>
+
 
 		
 		<div class="mainform">
 			<form onsubmit="event.preventDefault(); logWeights()">
-				<input type="url" name="url" id="url" placeholder="https://example.com" pattern="https://.*" size="30"	 required>
-				<button type="submit">Analyze</button>
+
+
+				<div style="display: flex; flex-direction: row; gap: 10px; flex-wrap: wrap; justify-content: center;">
+
+					<div>
+						<input type="url" name="url" id="url" placeholder="https://example.com" pattern="https://.*" size="30"	 required>
+					</div>
+					<div>
+						<button type="submit">Analyze</button>
+					</div>
+					
+				</div>
+			
 			</form>
 		</div>
+
+
+		<small><em>* if the url is accessible and not protected by anti-bot tooling.</em></small>
+
 	</div>
  	<div style="display: flex; justify-content: center;">
 		<video id="loading-video" src="/assets/waiting.mp4" autoplay loop muted style="display: none;"></video>
@@ -157,34 +171,37 @@ font-variant: caps;
 	</summary>
 	<div class="faqcontent">
 
-		<h3>"Get Your Head Straight" by Harry Roberts.</h3>
+		<h3>1 - "Get Your Head Straight" by Harry Roberts.</h3>
 		 
 		<div class="twoColumnResponsive">
 		
 			<iframe width="560" height="315" src="https://www.youtube.com/embed/UW1PEMBdX5E" 
 			title="YouTube video player" frameborder="0" 
-			style=" width: 100%; height: auto; aspect-ratio: 560 / 314;"
+			style=" width: 560px; height: auto;  aspect-ratio: 560 / 314;"
 			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen>
 			</iframe>
-		
-			<iframe class="speakerdeck-iframe" frameborder="0" src="https://speakerdeck.com/player/3a0d26bdfec642e496cb6d04103360b0" 
+			<!-- width: 100%; height: auto; -->
+			<iframe class="speakerdeck-iframe" width="560" height="315" frameborder="0" src="https://speakerdeck.com/player/3a0d26bdfec642e496cb6d04103360b0" 
 			title="Get Your Head Straight" 
 			allowfullscreen="true" 
-			style="border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px; width: 100%; height: auto; aspect-ratio: 560 / 314;" 
+			style=" width: 560px; height: auto; border: 0px; background: padding-box padding-box rgba(0, 0, 0, 0.1); margin: 0px; padding: 0px; border-radius: 6px; box-shadow: rgba(0, 0, 0, 0.2) 0px 5px 40px;  aspect-ratio: 560 / 314;" 
 			data-ratio="1.78343949044586">
 			</iframe>
 		 
 	</div>
+	<br>
+	The <a href="https://csswizardry.com/ct/" target="_blank">CT scan for your head</a> from the slides.
+	 
 
-	<h3> Capo.JS by </h3>
-
-		
+	<h3>2-  Capo.JS by Rick Viscomi</h3>
+	A different approach and visualisation of the elements in the head of a page. Results show both the original and optimized order of elements. 
+	The <a href="https://rviscomi.github.io/capo.js/" target="_blank">capo.js</a> tool is available as Chrome plugin, bookmarklet, in dev tools, and in BigQuery. 
 		
 	</div>
 </details>
 
 	<details class="faqs">
-		<summary class="faqitem">What is the ideal order of elements in the head?</summary>
+		<summary class="faqitem">The ideal order of elements in the head</summary>
 		<div class="faqcontent">
 		Theoretically that is. Because script and styling can depend on each other. Always test if moving elements has impact on performance and functionality.   
 		First check if the elements in your head are valid html. Remove any obsolete elements, place them in the body if needed.
@@ -325,40 +342,56 @@ font-variant: caps;
 		To see if changing the order of header elements has impact on performance I changed some on my website.
 		Programmablebrowser.com is build on the Astro framework which is fast by default. Only downside is that Astro injects CSS at the bottom of the head. 
 		Nevertheless:<br>
+		<br>
 
 	 
    <div class="twoColumnResponsive">
 
-		<img src="">
-		<img src="">
+		<img src="assets/progb-2-before.png" style="border:solid 1px gray; width: 540px;  aspect-ratio: 41∶25;">
+		<img src="assets/progrb-2-after.png" style="border:solid 1px gray; width: 540px;  aspect-ratio: 521∶328;">
 
    </div>
 
+   <img src="assets/progrb-2-wpt-before.png" alt="" style="width: 80%; height: auto;aspect-ratio: 1426∶313;">
+   <img src="assets/progrb-2-wpt-after.png" alt="" style="width: 80%; height: auto; aspect-ratio: 1439∶354;">
 
 
 	</div>
 	</details>
+
+	<details class="faqs">
+		<summary class="faqitem">Testcase 2</summary>
+		<div class="faqcontent">
+			You? Find me on LinkedIn. 
+			Have some tools to test performance gain without touching the code of your website.
+		</div>
+	</details>
+
 
 </div>  <!--- end faq container-->
 
 
 </div> <!--- end div id main-->
 
-<footer style="   background-color: #f1f1f1;
-padding: 10px;
-text-align: center;">
+<br><br>
 
-	<!-- nothing here -->
+<footer style="  border-top:1px solid #292c31 ;padding: 10px;text-align: center;">
 
-	 
-<div style=" 
-text-align: center;">
+		 
+<div style=" text-align: center; opacity: 0.5">
 	<a onclick="openModal()">about</a>
 </div>
 
     <dialog id="myModal">
-        <h3>About</h3>
-        <p>This is a simple modal example.</p>
+        <h3>About perfhead.com</h3>
+        <p>
+			Perfhead is 
+
+
+		</p>
+
+
+
         <button onclick="closeModal()">Close</button>
     </dialog>
 

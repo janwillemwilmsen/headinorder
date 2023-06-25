@@ -81,9 +81,10 @@ resultsContainer.innerHTML = '';
 const headWeights = await fetchHead2();
 const actualViz = visualizeWeights(headWeights);
 
-
+console.log(headWeights)
 
 const actualOrderDetails = document.createElement('details');
+actualOrderDetails.className = 'results'
 const actualOrderSummary = document.createElement('summary');
 actualOrderSummary.innerHTML = `<span class="summaryText">${LOGGING_PREFIX} Actual &lt;head&gt; order</span>`;
 const actualVizSpan = document.createElement('span');
@@ -93,8 +94,34 @@ actualOrderSummary.appendChild(actualVizSpan);
 
 actualOrderDetails.innerHTML += `<p class="detailsText">Actual &lt;head&gt; element ${document.head.innerHTML}</p>`;
 actualOrderDetails.appendChild(actualOrderSummary);
+
+
+let cloudflareObj = headWeights.some(item => item.html.includes("cloudflare"));
+console.log(cloudflareObj)
+
+if(cloudflareObj === true){
+	// create a new element
+	const newElement = document.createElement('div');
+	
+	// give the new element some content
+	newElement.innerHTML = `<div style=" color:white;text-align:center;">
+							The website you are testing is protected by Cloudflare. <br>Perfhead cannot access the html..... please use ct.css or capo.js in another way.
+							</div>
+							<style> .results{display:none;} </style>
+							`
+	// newElement.appendChild(newContent);
+
+	// append the new element to the DOM
+	resultsContainer.appendChild(newElement);
+}
+
+
 //   actualOrderDetails.innerHTML += `<pre>${actualViz}</pre>`;
 headWeights.forEach(({element, weight, html}) => {
+
+
+
+
 	console.log('ELEMENT -->',element)
 const viz = visualizeWeight(weight);
 // const encodedElement = htmlEncode(element.outerHTML);
@@ -120,6 +147,7 @@ return b.weight - a.weight;
 console.log('Sorted type::', typeof sortedWeights)
 console.log('Sorted:', sortedWeights)
 const sortedOrderDetails = document.createElement('details');
+sortedOrderDetails.className = 'results'
 const sortedOrderSummary = document.createElement('summary');
 sortedOrderSummary.innerHTML = `<span class="summaryText">${LOGGING_PREFIX} Sorted &lt;head&gt; order</span>`;
 const sortedViz = visualizeSortedWeights(sortedWeights.map(obj => obj.weight));
@@ -152,7 +180,7 @@ sortedOrderDetails.innerHTML += `<div class="outerresults">
 const explain = document.createElement('div')
 explain.innerHTML = ` <br><br>	<div class="explain">
 <div class="explaintitle">Weights + Head elements:</div>
-<div class="weight-10" style="color:#9e0142">Weight 11 - meta:is([charset], [http-equiv], [name=viewport])</div>
+<div class="weight-10" style="color:#9e0142">Weight 11 - meta:is([charset], [http-equiv], [name=viewport]), base</div>
 <div class="weight-9" style="color:#d53e4f">Weight 10 - title</div>
 <div class="weight-8" style="color:#f46d43">Weight 9 - link[rel=preconnect]</div>
 <div class="weight-7" style="color:#fdae61">Weight 8 - script[src][async]</div>
@@ -168,12 +196,45 @@ explain.innerHTML = ` <br><br>	<div class="explain">
 <br><br>
 <div class="explain">
 <div class="explaintitle">Notes:</div>
-<div class="explainnote">- External stylesheets are downloaded and inlined in the results. This is to test if there are '@import' includes in the file.</div>
-<div class="explainnote">- If there are external 'link rel = stylesheets' loaded they probably are injected by scripts. Check manually if there are @import in them.</div>
-<div class="explainnote">- Script from tagmanagers and social media platforms can inject other head-elements ('origin trails', or 'button.js').</div>
+<div class="explainnote">
+					<div style="display:flex;flex-direction:row;gap:10px;">
+							<div> 
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+							</div> 
+							<div>  	
+								External stylesheets are downloaded and inlined in the results (&lt;link rel=stylesheet&gt; is converted into &lt;style&gt). 
+						   		This is to test if there are '@import' includes in the CSS.
+							</div>
+					</div>
+</div>
+
+<div class="explainnote">
+					<div style="display:flex;flex-direction:row;gap:10px;">
+							<div> 
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+							</div>
+							<div>  
+								If the results of the test contain 'link rel = stylesheets', these external stylesheets are probably are injected by scripts, 
+						   		and cannot be converted/tested/prioritized automatically. 
+						   		They are seen as normal CSS files. Check the content of the CSS manually if there are '@import' includes in them.
+							</div>
+					</div>
+</div>
+					
+<div class="explainnote">
+					<div style="display:flex;flex-direction:row;gap:10px;">
+							<div> 
+								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+							</div>
+							 <div>	
+								Scripts from tagmanagers and social media platforms can and may inject other head-elements ('origin trails', 'button.js', or styles).
+							   	When trying to rearrange the elements in the head you might not see those elements. 			
+							</div>
+					</div>
  </div>
 
-
+ </div>
+ 
 `
 
 

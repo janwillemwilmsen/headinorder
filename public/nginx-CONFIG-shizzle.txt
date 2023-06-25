@@ -1,0 +1,208 @@
+
+
+# https://vlemon.com/blog/set-up-nginx-server-blocks-virtual-hosts-on-ubuntu-18.04-google-cloud-compute-engine
+# https://www.youtube.com/watch?v=fv9U_TNVFpQ
+
+
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/html;
+        index index.html index.htm index.nginx-debian.html;
+        server_name _;
+
+
+        location / {
+        proxy_pass http://localhost:4000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+
+
+/////////////////////  OUD HIERBOVEN
+
+server {
+listen 80 default_server;
+listen [::]:80 default_server;
+root /var/www/html;
+index index.html index.htm index.nginx-debian.html;
+server_name perfhead.com www.perfhead.com;
+
+    location / {
+    proxy_pass http://localhost:4000;
+    proxy_http_version 1.1;
+    proxy_set_header Upgrade $http_upgrade;
+    proxy_set_header Connection 'upgrade';
+    proxy_set_header Host $host;
+    proxy_cache_bypass $http_upgrade;
+    }
+
+listen [::]:443 ssl ipv6only=on; # managed by Certbot
+listen 443 ssl; # managed by Certbot
+ssl_certificate /etc/letsencrypt/live/perfhead.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/perfhead.com/privkey.pem; # managed by Certbot
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+server {
+if ($host = www.perfhead.com) {
+return 301 https://$host$request_uri;
+} # managed by Certbot
+
+if ($host = perfhead.com) {
+return 301 https://$host$request_uri;
+} # managed by Certbot
+
+
+listen 80 default_server;
+listen [::]:80 default_server;
+server_name perfhead.com www.perfhead.com;
+return 404; # managed by Certbot
+
+}
+
+ /////////////////////////////////
+ perfhead
+ server {
+        listen 80;
+        listen [::]:80;
+
+      #  root /var/www/perfhead.com/html;
+       # index index.html index.htm index.php;
+
+        server_name perfhead.com www.perfhead.com;
+
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+location / {
+      proxy_pass      http://127.0.0.1:4000;
+    }
+}
+
+
+/////////////////////////////////////////////
+
+ server { # simple reverse-proxy
+    listen       80;
+    server_name  perfhead.com www.perfhead.com;
+    #access_log   logs/domain2.access.log  main;
+
+    # serve static files
+#    location /  {
+   #   root    /var/www/virtual/big.server.com/htdocs;
+   #   expires 30d;
+ #   }
+
+    # pass requests for dynamic content to rails/turbogears/zope, et al
+    location / {
+      proxy_pass      http://127.0.0.1:4000;
+    }
+  }
+
+#server {
+ #       listen 80 default_server;
+ #      listen [::]:80 default_server;
+ #     root /var/www/html;
+ #       index index.html index.htm index.nginx-debian.html;
+#       server_name perfhead.com www.perfhead.com;        
+
+
+
+ #       location / {
+ #       proxy_pass http://localhost:4000;
+ #       proxy_http_version 1.1;
+ #       proxy_set_header Upgrade $http_upgrade;
+ #      proxy_set_header Connection 'upgrade';
+ #      proxy_set_header Host $host;
+ #      proxy_cache_bypass $http_upgrade;
+ #      }
+
+#  listen 0.0.0.0:80;
+#    server_name localhost;
+# server_name perfhead.com www.perfhead.com;      
+    # location / {
+     # proxy_set_header X-Real-IP $remote_addr;
+     # proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     # proxy_set_header Host $http_host;
+     # proxy_set_header X-NginX-Proxy true;
+
+     # proxy_pass http://127.0.0.1:4000/;
+     # proxy_redirect off;
+    #}
+
+listen [::]:443 ssl ipv6only=on; # managed by Certbot
+listen 443 ssl; # managed by Certbot
+ssl_certificate /etc/letsencrypt/live/perfhead.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/perfhead.com/privkey.pem; # managed by Certbot
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+
+
+
+#}
+
+
+/////////////////////////////////////////////////////////////////////////////////
+
+
+server {
+     listen [::]:80;
+     listen 80;
+ 
+     server_name perfhead.com www.perfhead.com;
+ 
+     return 301 https://perfhead.com$request_uri;
+ }
+
+server {
+     listen [::]:443 ssl http2;
+     listen 443 ssl http2;
+ 
+     server_name www.perfhead.com;
+ 
+
+ssl_certificate /etc/letsencrypt/live/perfhead.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/perfhead.com/privkey.pem; # managed by Certbot
+
+
+     return 301 https://perfhead.com$request_uri;
+}
+ 
+server {
+     listen [::]:443 ssl http2;
+     listen 443 ssl http2;
+ 
+     server_name perfhead.com;
+    
+ssl_certificate /etc/letsencrypt/live/perfhead.com/fullchain.pem; # managed by Certbot
+ssl_certificate_key /etc/letsencrypt/live/perfhead.com/privkey.pem; # managed by Certbot
+include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+	
+    location / {
+         proxy_pass http://localhost:4000;
+         proxy_http_version 1.1;
+         proxy_set_header Upgrade $http_upgrade;
+         proxy_set_header Connection 'upgrade';
+         proxy_set_header Host $host;
+         proxy_cache_bypass $http_upgrade;
+       
+         add_header Content-Security-Policy "img-src * 'self' data: blob: https:; default-src 'self' https://*.googleapis.com https://*.googletagmanager.com https://*.google-analytics.com https://s.ytimg.com https://www.youtube.com https://yourdomainname.com https://*.googleapis.com https://*.gstatic.com https://*.w.org data: 'unsafe-inline' 'unsafe-eval';" always; 
+         add_header X-Xss-Protection "1; mode=block" always;
+         add_header X-Frame-Options "SAMEORIGIN" always;
+         add_header X-Content-Type-Options "nosniff" always;
+         add_header Access-Control-Allow-Origin "https://perfhead.com";
+         add_header Referrer-Policy "origin-when-cross-origin" always;
+         add_header Strict-Transport-Security "max-age=31536000; includeSubdomains; preload";
+     }
+} 

@@ -178,16 +178,16 @@ for (const newElement of newElements) {
 		  PREFETCH_PRERENDER: isPrefetchPrerender
 		};
 	  
-		function isMeta(element) {
-		  return element.matches('meta:is([charset], [http-equiv], [name=viewport])');
-		}
+		// function isMeta(element) {
+		//   return element.matches('meta:is([charset], [http-equiv], [name=viewport]), base');
+		// }
 	  
-		function isTitle(element) {
-		  return element.matches('title');
-		}
+		// function isTitle(element) {
+		//   return element.matches('title');
+		// }
 	  
 		function isMeta(element) {
-		return element.matches('meta:is([charset], [http-equiv], [name=viewport])');
+		return element.matches('meta:is([charset], [http-equiv], [name=viewport]), base');
 		}
 
 		function isTitle(element) {
