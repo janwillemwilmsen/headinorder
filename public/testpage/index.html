@@ -14,7 +14,9 @@
 	  <link rel="preconnect" href="https://fonts.googleapis.com">
 	  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://slowfil.es">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self'">
+	<!-- node app fails with inline CSP with external ref, have to add nonce -->
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://slowfil.es"> -->
 	<title>Document</title>
 	<base href="/">
 	<link rel="stylesheet" href="https://slowfil.es/file?type=css&delay=100">
