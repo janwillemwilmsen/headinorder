@@ -37,7 +37,7 @@ async function fetchHead2() {
 }
 
 
- 
+ /// Added swiches for Mobile/Desktop
 
 function visualizeWeight(weight) {
 // return `<span class="weight-${weight + 1}">${new Array(weight + 1).fill('█').join('')}</span>`;

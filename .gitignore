@@ -1,3 +1,12 @@
+
+test.js
+failedDockerfile
+failedDockerfile2
+Dockerfile
+app-old.js
+nginx-CONFIG-shizzle.txt
+public/assets/icons/old
+
 # Logs
 logs
 *.log
