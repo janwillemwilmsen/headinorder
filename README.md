@@ -3,12 +3,12 @@ Analyzes the elements in the head of your page.
 Shows current order, and outputs optimal order.
 
 ## Node/Express app with Playwright/Chrome 
-Clone and install
-Start server with : node app
-Go to : localhost:4000
-Test url.
+Clone and install  
+Start server with : node app  
+Go to : localhost:4000  
+Test url.  
 
-Uses Capo.js as base script.
+Uses Capo.js as base script.  
 
 *Differences:* 
 - fetches external stylesheets and converts them into <style> </style> elements to test if there are @import rules in them.

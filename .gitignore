@@ -4,8 +4,8 @@ failedDockerfile
 failedDockerfile2
 Dockerfile
 app-old.js
-nginx-CONFIG-shizzle.txt
-public/assets/icons/old
+public/nginx-CONFIG-shizzle.txt
+public/assets/old
 
 # Logs
 logs
