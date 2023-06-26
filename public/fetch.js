@@ -1,15 +1,31 @@
 
 
+/// Function to remove Overflow from <code> element in sorted view
+const copyableElements = document.getElementsByClassName('copyable');
+function showHideOverflowedText() {
+	const selectedValue = document.querySelector('input[name="overflowToggle"]:checked').value;
+  
+	for (let i = 0; i < copyableElements.length; i++) {
+	  const element = copyableElements[i];
+  
+	  if (selectedValue === 'visible') {
+		element.style.overflow = 'visible';
+		element.style.whiteSpace = 'normal';
+	  } else {
+		element.style.overflow = 'hidden';
+		element.style.whiteSpace = 'nowrap';
+	  }
+	}
+  }
+
 
 
 
 const LOGGING_PREFIX = 'Capo: ';
  
 
-
+/// Fetch the data from api
 async function fetchHead2() {
-
-
 		// const response = await fetch(`http://localhost:3000/head?url=https://www.essent.nl`);
 		const urlInput = document.getElementById('url');
 		const response = await fetch(`/head?url=${encodeURIComponent(urlInput.value)}`);
@@ -18,25 +34,42 @@ async function fetchHead2() {
 		console.log('data fetchhead:',headChildren)
 		console.log('Is data an array? -false ', Array.isArray(headChildren))
 		return headChildren;
- 
-
 }
 
- 
+
  
 
 function visualizeWeight(weight) {
-return `<span class="weight-${weight + 1}">${new Array(weight + 1).fill('█').join('')}</span>`;
+// return `<span class="weight-${weight + 1}">${new Array(weight + 1).fill('█').join('')}</span>`;
+
+if (window.matchMedia("(max-width: 767px)").matches) {
+	return `<span class="weight-${weight + 1}">${new Array(weight + 1).fill('|').join('')}</span>`;
+  } else {
+	return `<span class="weight-${weight + 1}">${new Array(weight + 1).fill('█').join('')}</span>`;
+  }
+
 }
 
 function visualizeWeights(weights) {
 // weights is an array of objects, so you can destructure each object in the map function
-const visual = weights.map(({ weight }) => `<span style="padding:0px;margin:0;" class="weight-${weight +1}">${"█"}</span>`).join('');
+let visual;
+if (window.matchMedia("(max-width: 767px)").matches) {
+ visual = weights.map(({ weight }) => `<span style="padding:0px;margin:0;" class="weight-${weight +1}">${"|"}</span>`).join('');
+} else {
+ visual = weights.map(({ weight }) => `<span style="padding:0px;margin:0;" class="weight-${weight +1}">${"█"}</span>`).join('');
+}
+
+
 return visual;
 }
 
 function visualizeSortedWeights(weights) {
-const visual = weights.map(weight => `<span class="weight-${weight +1}">${"█"}</span>`).join('');
+let visual
+	if (window.matchMedia("(max-width: 767px)").matches) {
+ visual = weights.map(weight => `<span class="weight-${weight +1}">${"|"}</span>`).join('');
+	} else {
+ visual = weights.map(weight => `<span class="weight-${weight +1}">${"█"}</span>`).join('');
+	}
 return visual;
 }
 
@@ -45,9 +78,21 @@ return str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 		
 
-
-	 
-
+/// Add styling to show when invalid head-elements are in the head.
+let validSign;
+let validStyle;
+function validatedHeadElement(valid){
+	if(valid === true){
+		console.log('FOUND valid element')
+		validStyle = ''
+		validSign = ''
+	}
+	else {
+		console.log('FOUND invalid element')
+		validStyle = 'red'
+		validSign = `❌`; /* Content to be prepended */
+	}
+}
 
 
 
@@ -62,8 +107,8 @@ async function logWeights() {
 	try {
 
 
-const resultsContainer = document.getElementById('results-container');
-resultsContainer.innerHTML = '';
+	const resultsContainer = document.getElementById('results-container');
+	resultsContainer.innerHTML = '';
 	
 	const form = document.querySelector('form');
 	const urlInput = document.getElementById('url');
@@ -95,7 +140,7 @@ actualOrderSummary.appendChild(actualVizSpan);
 actualOrderDetails.innerHTML += `<p class="detailsText">Actual &lt;head&gt; element ${document.head.innerHTML}</p>`;
 actualOrderDetails.appendChild(actualOrderSummary);
 
-
+//// Can't bypass Cloudflare bot detection. (Could not get Playwright Stealth working.) -> Show bot detected message:
 let cloudflareObj = headWeights.some(item => item.html.includes("cloudflare"));
 console.log(cloudflareObj)
 
@@ -109,20 +154,26 @@ if(cloudflareObj === true){
 							</div>
 							<style> .results{display:none;} </style>
 							`
-	// newElement.appendChild(newContent);
-
-	// append the new element to the DOM
 	resultsContainer.appendChild(newElement);
 }
 
 
+
+
+
+
 //   actualOrderDetails.innerHTML += `<pre>${actualViz}</pre>`;
-headWeights.forEach(({element, weight, html}) => {
+headWeights.forEach(({element, weight, html, valid}) => {
 
 
 
 
-	console.log('ELEMENT -->',element)
+
+
+console.log('VALID::', valid)
+const isvalidated = validatedHeadElement(valid)
+
+console.log('ELEMENT -->',element)
 const viz = visualizeWeight(weight);
 // const encodedElement = htmlEncode(element.outerHTML);
 const encodedElement = element;
@@ -130,10 +181,10 @@ const encodedElement = element;
 const codedHeadElement = htmlEncode(html)
  
 actualOrderDetails.innerHTML += `<div class="outerresults">
-									<div style="min-width:200px;">${viz} ${weight + 1}</div> 
-									<div style="min-width:100px;"> 	${encodedElement}: </div>
-							  		<code style="display:inline-block;overflow-wrap: anywhere;" class="Xlanguage-html">
-									
+									<div class="visWeight">${viz} ${weight + 1}</div> 
+									<div style="user-select: none;width:50px; min-width: 50px;height: 20px;  overflow: hidden;  white-space: nowrap;background-color:${validStyle}"> 	${encodedElement}: </div>
+							  		<code style="display:inline-block;overflow-wrap:anywhere; overflow: hidden; white-space:nowrap;" class="Xlanguage-html">
+									  <span style="user-select: none;">	${validSign} </span>
 										${codedHeadElement}
 									</code>
 								 </div>`;
@@ -159,20 +210,46 @@ sortedOrderDetails.innerHTML += `<p class="detailsText">Sorted &lt;head&gt; elem
 sortedOrderDetails.appendChild(sortedOrderSummary);
 
  const sortedHead = document.createElement('span');
-sortedWeights.forEach(({element, weight, html}) => {
+
+
+
+
+
+sortedWeights.forEach(({element, weight, html, valid}) => {
+	const isvalidated = validatedHeadElement(valid)
 const viz = visualizeWeight(weight);
  const encodedElement = element;
 const codedHeadElement = htmlEncode(html)
 sortedOrderDetails.innerHTML += `<div class="outerresults">
-										<div style="min-width:200px;">${viz} ${weight + 1}</div> 
-										<div style="min-width:100px;">${encodedElement}:</div>
-							  			<code style="display:inline-block;overflow-wrap:anywhere;" class="Xlanguage-html">
-											
-											${codedHeadElement}
-										</code>
-								 </div>`;
+									<div class="visWeight">${viz} ${weight + 1}</div> 
+									<div style="user-select: none;width:50px; min-width: 50px;height: 20px;  overflow: hidden;  white-space: nowrap;background-color:${validStyle}">${encodedElement}:</div>
+									<code style="display:inline-block;overflow-wrap:anywhere; overflow: hidden; white-space:nowrap;" class="copyable Xlanguage-html">
+									<span style="user-select: none;">	${validSign} </span>
+									${codedHeadElement}
+									</code>
+								</div>`;
 // sortedHead.appendChild(element.cloneNode(true));
 });
+
+
+sortedOrderDetails.innerHTML += `
+
+	<div style="display:flex;flex-direction:row;gap:10px; font-size:12px; padding:10px;align-items: baseline;">	
+		<span>Make whole 'sorted head elements' visible.</span> 
+		<label>
+			<input type="radio" name="overflowToggle" value="visible" onchange="showHideOverflowedText()">
+			Yes
+		</label>
+		<label>
+			<input type="radio" name="overflowToggle" value="hidden" onchange="showHideOverflowedText()">
+			No
+		</label>
+  <div>
+`;
+
+ 
+ 
+
 
 
 
@@ -199,7 +276,7 @@ explain.innerHTML = ` <br><br>	<div class="explain">
 <div class="explainnote">
 					<div style="display:flex;flex-direction:row;gap:10px;">
 							<div> 
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAAsTAAALEwEAmpwYAAAALklEQVR4nGNgwAU+fPiQ/uHDh+sfPnxIQxa88fHjx/8gGlkwDaTy/fv3qTiNAwBunx9GP6YwMAAAAABJRU5ErkJggg==">
 							</div> 
 							<div>  	
 								External stylesheets are downloaded and inlined in the results (&lt;link rel=stylesheet&gt; is converted into &lt;style&gt). 
@@ -211,7 +288,7 @@ explain.innerHTML = ` <br><br>	<div class="explain">
 <div class="explainnote">
 					<div style="display:flex;flex-direction:row;gap:10px;">
 							<div> 
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAAsTAAALEwEAmpwYAAAALklEQVR4nGNgwAU+fPiQ/uHDh+sfPnxIQxa88fHjx/8gGlkwDaTy/fv3qTiNAwBunx9GP6YwMAAAAABJRU5ErkJggg==">
 							</div>
 							<div>  
 								If the results of the test contain 'link rel = stylesheets', these external stylesheets are probably are injected by scripts, 
@@ -224,11 +301,12 @@ explain.innerHTML = ` <br><br>	<div class="explain">
 <div class="explainnote">
 					<div style="display:flex;flex-direction:row;gap:10px;">
 							<div> 
-								<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6a1 1 0 0 1 1.6-.8l8 6a1 1 0 0 1 0 1.6l-8 6A1 1 0 0 1 8 18V6Z"/></svg>
+								<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAACXBIWXMAAAsTAAALEwEAmpwYAAAALklEQVR4nGNgwAU+fPiQ/uHDh+sfPnxIQxa88fHjx/8gGlkwDaTy/fv3qTiNAwBunx9GP6YwMAAAAABJRU5ErkJggg==">
 							</div>
 							 <div>	
 								Scripts from tagmanagers and social media platforms can and may inject other head-elements ('origin trails', 'button.js', or styles).
-							   	When trying to rearrange the elements in the head you might not see those elements. 			
+							   	When trying to rearrange the elements in the head you might not see those elements. 
+								Cookie consent managers can trigger the injecting of addional elements in the head. Perfhead can't accept cookie consent.  		
 							</div>
 					</div>
  </div>

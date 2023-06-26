@@ -4,7 +4,6 @@ import got from 'got'
 import url from 'url'
 
 
-/// BLA
 /// got(targetUrl, {rejectUnauthorized: false}) /// https://github.com/sindresorhus/got/issues/675
 
 const app = express();
@@ -24,39 +23,6 @@ app.get('/', (req, res) => {
 	const { url } = req.query;
 
 
-	// async function getProcessedHeadElements(page) {
-	// 	const headElements = await page.$$('head > *');
-	// 	const newElements = [];
-	
-	// 	for (const element of headElements) {
-	// 		const tagName = await element.evaluate(el => el.tagName);
-	// 		if (tagName.toLowerCase() === 'link') {
-	// 			const rel = await element.getAttribute('rel');
-	// 			const href = await element.getAttribute('href');
-	// 			if (rel && rel.toLowerCase().includes('stylesheet') && href) {
-	// 				let hrefUrl = new URL(href, page.url());  // handle both absolute and relative URLs
-	
-	// 				// Fetch the CSS content
-	// 				const response = await got(hrefUrl.toString());
-	// 				const cssContent = response.body;
-	
-	// 				// Add the CSS content to newElements in style tags
-	// 				newElements.push({type: 'style', content: cssContent});
-	// 			} else {
-	// 				// simply add to newElements for non-stylesheet links
-	// 				newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
-	// 			}
-	// 		} else {
-	// 			newElements.push({type: 'other', content: await page.evaluate(el => el.outerHTML, element)});
-	// 		}
-	
-	// 		// Remove the current element from the head
-	// 		await element.evaluate(el => el.remove());
-	// 	}
-	
-	// 	return newElements;
-	// }
-
 
 	async function getProcessedHeadElements(page) {
 		const headElements = await page.$$('head > *');
@@ -70,8 +36,9 @@ app.get('/', (req, res) => {
 	
 					// Fetch the CSS content
 					const response = await got(hrefUrl.toString());
-					const cssContent = response.body;
-	
+					let cssContent = response.body;
+					cssContent = cssContent.slice(0, 100);
+
 					// Return the CSS content in style tags
 					return { type: 'style', content: cssContent };
 				} else {
@@ -103,33 +70,10 @@ app.get('/', (req, res) => {
 	  await page.goto(url);
 	  await page.waitForLoadState('domcontentloaded'); // Wait for DOMContentLoaded event
 
-		await page.waitForTimeout(1000)
+	  await page.waitForTimeout(1000)
 
 	  
 	  
-/// GET STYLESHEETS files, and store content.
-/// GET STYLESHEETS files, and store content.
-// async function loadExternalStylesheets(page) {
-// 	const stylesheetLinks = await page.$$eval('link[rel="stylesheet"][href]', (links) =>
-// 	  links.map((link) => link.href)
-// 	);
-
-// 	const updatetedHeadElements = [];
-
-// 	for (const link of stylesheetLinks) {
-// 	  const response = await got(link);
-// 	  console.log(response)
-// 	  const content =  response.body.toString();
-// 	  updatetedHeadElements.push({ href: link, content });
-// 	}
-
-// 	for (const stylesheet of updatetedHeadElements) {
-// 	  await page.addStyleTag({ content: 'test jwww' });
-// 	  // await page.addStyleTag({ content: stylesheet.content });
-// 	}
-//   }
-
-//   await loadExternalStylesheets(page);
 
   
 const newElements = await getProcessedHeadElements(page);
@@ -177,6 +121,17 @@ for (const newElement of newElements) {
 		  DEFER_SCRIPT: isDeferScript,
 		  PREFETCH_PRERENDER: isPrefetchPrerender
 		};
+
+		const VALID_HEAD_ELEMENTS = new Set([
+			'base',
+			'link',
+			'meta',
+			'noscript',
+			'script',
+			'style',
+			'template',
+			'title'
+		  ]);
 	  
 		// function isMeta(element) {
 		//   return element.matches('meta:is([charset], [http-equiv], [name=viewport]), base');
@@ -213,22 +168,22 @@ for (const newElement of newElements) {
 		}
 
 
-		function isImportStyles(element) {
-			const importRe = /@import/;
+		// function isImportStyles(element) {
+		// 	const importRe = /@import/;
 		  
-			if (element.matches('style')) {
-			  return importRe.test(element.textContent);
-			}
+		// 	if (element.matches('style')) {
+		// 	  return importRe.test(element.textContent);
+		// 	}
 		  
-			/* TODO: Support external stylesheets.
-			if (element.matches('link[rel=stylesheet][href]')) {
-			  let response = fetch(element.href);
-			  response = response.text();
-			  return importRe.test(response);
-			} */
+		// 	/* TODO: Support external stylesheets.
+		// 	if (element.matches('link[rel=stylesheet][href]')) {
+		// 	  let response = fetch(element.href);
+		// 	  response = response.text();
+		// 	  return importRe.test(response);
+		// 	} */
 		  
-			return false;
-		  }
+		// 	return false;
+		//   }
 
 		function isSyncScript(element) {
 		return element.matches('script:not([src][defer],[src][async],[type*=json])')
@@ -259,12 +214,47 @@ for (const newElement of newElements) {
 
 			return ElementWeights.OTHER;
 		}
+
+
+		/// NEW 
+
+		function isValidElement(element) {
+			// Element itself is not valid.
+			if (!VALID_HEAD_ELEMENTS.has(element.tagName.toLowerCase())) {
+			  return false;
+			}
+			
+			// Children are not valid.
+			if (element.matches(`:has(:not(${Array.from(VALID_HEAD_ELEMENTS).join(', ')}))`)) {
+			  return false;
+			}
+		  
+			// <title> is not the first of its type.
+			if (element.matches('title:is(:nth-of-type(n+2))')) {
+			  return false;
+			}
+		  
+			// <base> is not the first of its type.
+			if (element.matches('base:is(:nth-of-type(n+2))')) {
+			  return false;
+			}
+		  
+			// CSP meta tag comes after a script. CSP disable preload scanner, invalidates prev downloaded scripts, re-downloads all files....
+			if (element.matches('script ~ meta[http-equiv="Content-Security-Policy" i]')) {
+			  return false;
+			}
+		  
+			return true;
+		  }
+
+		/// NEW end
 			
 		const headChildren = Array.from(document.head.children);
 
 		return headChildren.map(element => {
 			const weight = getWeight(element);
-			return { element: element.tagName.toLowerCase(), weight, html: element.outerHTML };
+			const isvalidElement = isValidElement(element);
+			return { element: element.tagName.toLowerCase(), weight, html: element.outerHTML, valid : isvalidElement };
 		});
 });
   
