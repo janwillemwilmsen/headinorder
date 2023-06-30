@@ -38,7 +38,8 @@ app.get('/', (req, res) => {
 					// Fetch the CSS content
 					const response = await got(hrefUrl.toString());
 					let cssContent = response.body;
-					cssContent = cssContent.slice(0, 100);
+					// if you don't want all the css, slice everything above 100 chars
+					// cssContent = cssContent.slice(0, 100);
 
 					// Return the CSS content in style tags
 					return { type: 'style', content: cssContent };
